@@ -1,0 +1,16 @@
+{% extends 'Todo/base.html' %}
+{% load static %}
+{% block main %}
+    <div id="main" class="res">
+        <main class="fixed-width" style="background: url({% static 'images/404.png'%}); background-position: 0%; background-size: contain; background-repeat: no-repeat; background-color: white;">
+            <div class="container">
+                <div id="errorOverlay">
+                    <div>
+                        <h1 class="error"><span>4</span><span>0</span><span>4</span></h1>
+                        <p class="error1">Page not found</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+{% endblock %}

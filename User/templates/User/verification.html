@@ -1,0 +1,155 @@
+{% extends 'Todo/base.html' %}
+{% block style %}
+    <style type="text/css">
+        .fixed-width, .container{
+            display: grid;
+            place-items: center;
+        }
+    </style>
+{% endblock %}
+{% block main %}
+    <div id="main">
+        <main class="fixed-width">
+            <div class="container">
+                <div class="alert">
+                    {% if messages %}
+                        {% for message in messages %}
+                            {% if message %}
+                                <style type="text/css">
+                                    .alert{
+                                        animation-name: setOff;
+                                        animation-duration: 3s;
+                                        animation-iteration-count: 1;
+                                    }
+                                    @keyframes setOff{
+                                        to{
+                                            opacity: 1;
+                                        }
+                                    }
+                                </style>
+                            {% endif %}
+                            <div class="alert-message alert-{{ message.tags }}">
+                                <p class="message">{{ message|safe }}</p>
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        <div class="alert-message">
+                            <p class="message"></p>
+                        </div>
+                    {% endif %}
+                </div>
+                <div id="auth">
+                    <div class="login">
+                        <form method="POST">
+                            <legend>Verification methods</legend>
+                            <p class="info">Choose a verification method to verify you</p>
+                            <ul>
+                                <li onclick="$('#auth').slick('slickGoTo',4, true)">Question & Answer</li>
+                                <li onclick="$('#auth').slick('slickGoTo',1, true)">Link verification</li>
+                            </ul>
+                        </form> 
+                    </div>
+                    <div class="login">
+                        <form method="POST" class="my-ajax-form" action='.' data-url='{{ request.build_absolute_uri|safe }}'>
+                            <legend>Link verification</legend>
+                            <p class="info">Enter the email or username you used to register with us, we will send a verification link to the email you registered with, link expires after 3 days.</p>
+                            <div class="input-group">
+                                <label>Email</label>
+                                <div class="input">
+                                    <span class="fas fa-user"></span>
+                                    <input type="email" name="name">
+                                </div>
+                            </div>
+                            <input class="disappear" type="text" name="from" value="link">
+                            <button class="btn">Send link</button>
+                        </form> 
+                    </div>
+                    <div class="signup" id='qas'>
+                        <form method="POST" class="my-ajax-form" action='.' data-url='{{ request.build_absolute_uri|safe }}'>
+                            <legend>Question and Answer</legend>
+                            <!-- <p class="question"></p>
+                            <div class="input-group">
+                                <label>Answer</label>
+                                <div class="input">
+                                    <span class="fas fa-check"></span>
+                                    <input type="text" name="ans1">
+                                </div>
+                            </div> -->
+                            <input class="disappear" type="text" name="from" value="qas">
+                            <button class="btn">Verify</button>
+                        </form> 
+                    </div>
+                    <div class="signup">
+                        <form method="POST" class="my-ajax-form" action='.' data-url='{{ request.build_absolute_uri|safe }}'>
+                            <legend>Question and Answer</legend>
+                            <p class="info">Enter your email address you registered with</p>
+                            <div class="input-group">
+                                <label>Email</label>
+                                <div class="input">
+                                    <span class="fas fa-user"></span>
+                                    <input type="email" name="email">
+                                    <input class="disappear" type="text" name="from" value="qa_email">
+                                </div>
+                            </div>
+                            <button class="btn">Continue</button>
+                        </form> 
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+{% endblock %}
+{% block ajax_script%}
+    <script type="text/javascript">
+        function resetForm() {
+        }
+        function stringResponse(argument) {
+        }
+        function setErrorText(selector, obj) {
+        }
+
+        function ajaxListener(response, status) {
+            try{
+                setAlert(response['data'], status)
+                if (response['from'] == 'qa_email' && status == 'success'){
+                    for (i in response['questions']){
+                        // Creating P tag for showing question
+                        let p = document.createElement('p')
+                        p.innerText = response['questions'][i]
+                        p.classList.add('question')
+
+                        // Creating Form element tag for collecting answer
+                        let inputGroup = document.createElement('div')
+                        inputGroup.innerHTML = `<label>Answer</label>
+                                <div class="input">
+                                    <span class="fas fa-check"></span>
+                                    <input type="text" name=`+i+`>
+                                </div>`
+                        inputGroup.classList.add('input-group')
+
+                        // Connect P tag and Form element tag to DOM
+                        let connector = document.querySelector('#qas form .disappear')
+                        connector.parentNode.insertBefore(p, connector)
+                        connector.parentNode.insertBefore(inputGroup, connector)
+                    }
+                    $('#auth').slick('slickGoTo',2, true)
+                    let inputs = document.querySelectorAll("input");
+                    inputs.forEach(input => {
+                        input.addEventListener("focus", addcl);
+                        input.addEventListener("blur", remcl);
+                    });
+                }
+                if (response['from'] == 'qas'){
+                    if (response['redirectTo']) {
+                        setTimeout(function(){
+                            window.location.href = response['redirectTo']
+                        }, 2000)
+                    }
+                }
+            }
+            catch(e) {
+                print(e)
+            }
+        }
+    </script>
+{% endblock %}

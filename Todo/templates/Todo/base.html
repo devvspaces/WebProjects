@@ -1,0 +1,90 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width,initial-scale=1">
+        {% if title %}
+            <title>Todo App: {{ title }}</title>
+        {% else %}
+             <title>Todo App</title>
+        {% endif %}
+        <link rel="stylesheet" href="{% static 'css/slicknav.css' %}">
+        <link rel="stylesheet" href="{% static 'css/slick-theme.min.css' %}">
+        <link rel="stylesheet" href="{% static 'css/slick.min.css' %}">
+        <link rel="stylesheet" href="{% static 'css/style.css' %}">
+        <link href="{% static 'themes/green/pace-theme-corner-indicator.css' %}" rel="stylesheet" />
+        {% block style %}
+        {% endblock %}
+    </head>
+    <body>
+        <nav>
+            <div class="navbar">
+                <a href="#" class="brand">Todo <span>App</span></a>
+                <ul id="menu">
+                    <li><a href="{% url 'home' %}">Home</a></li>
+                    {% if user.is_authenticated %}
+                        <li class="dropdown"><a href='#'>Settings</a><ul>
+                            <li><a href="{% url 'change-password' %}">Change Password</a></li>
+                            <li><a href="{% url 'qa' %}">Manage Q&A</a></li>
+                        </ul></li>
+                        <li id="logout"><a href="{% url 'logout' %}">Logout</a></li>
+                    {% else %}
+                        <li class="dropdown"><a href='#'>Authenticate</a>
+                            <ul>
+                                <li><a href="{% url 'authentication' 'register' %}">Register</a></li>
+                                <li><a href="{% url 'authentication' 'login' %}">Login</a></li>
+                            </ul>
+                        </li>
+                    {% endif %}
+                </ul>
+                <a href="{% url 'logout' %}" class="in-out"><span><i class="fas fa-sign-out-alt"></i></span><span>Logout</span></a>
+            </div>
+            <div class="mobile"></div>
+        </nav>
+        <!-- {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}">{{message}}</div>
+            {% endfor %}
+        {% endif %} -->
+        {% block main %}
+        {% endblock %}
+        <footer>
+            <div class="footer">
+                <p>Made with creativity in mind by <a href="#">Netrobe Developers</a></p>
+            </div>
+        </footer>
+        <script type="text/javascript" src="{% static 'js/jquery.js'%}"></script>
+        <script type="text/javascript" src="{% static 'js/fontawesome-all.js'%}"></script>
+        <script src="{% static 'js/pace.js' %}"></script>
+        <script type="text/javascript" src="{% static 'js/slick.min.js'%}"></script>
+        <script type="text/javascript" src="{% static 'js/jquery.slicknav.min.js'%}"></script>
+        <script type="text/javascript">
+            function print(argument) {
+                console.log(argument)
+            }
+            // Code to call loader on ajax call
+            function setLoader(){
+                let loader = $('.pace');
+                loader.removeClass('pace-inactive')
+                loader.css('display','block')
+                loader.addClass('pace-active')
+            }
+            // Code to kill loader on ajax call
+            function destroyLoader(){
+                let loader = $('.pace');
+                loader.addClass('pace-inactive')
+                loader.removeClass('pace-active')
+                loader.css('display','none')
+            }
+        </script>
+        {% block ajax_script%}
+        {% endblock %}
+        <script type="text/javascript" src="{% static 'js/ajax.js'%}"></script>
+        <script type="text/javascript">
+            destroyLoader();
+        </script>
+        <script type="text/javascript" src="{% static 'js/main.js'%}"></script>
+        {% block extra_script%}
+        {% endblock %}
+    </body>
+</html>

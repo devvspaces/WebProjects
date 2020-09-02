@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My Form</title>
+</head>
+<body>
+    <div id="main" class="res">
+        <main class="fixed-width">
+            <div class="container">
+                <form method="post">
+                    {% csrf_token %}
+                    {{ form }}
+                    <button>Submit</button>
+                </form>
+            </div>
+            <div>
+                {% for user in object_list %}
+                    <ul>
+                        <li>{{ user.title }}</li>
+                        <li>{{ user.authors }}</li>
+                        <li>{{ user.publisher }}</li>
+                        <li>{{ user.publisher_date|date }}</li>
+                    </ul>
+                {% endfor %}
+            </div>
+        </main>
+    </div>
+</body>
+</html>

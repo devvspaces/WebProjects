@@ -1,0 +1,33 @@
+{% extends 'Todo/base.html' %}
+{% block style %}
+    <style type="text/css">
+        .fixed-width, .container{
+            display: grid;
+            place-items: center;
+        }
+    </style>
+{% endblock %}
+{% block main %}
+    <div id="main">
+        <main class="fixed-width">
+            <div class="container">
+                <div id="auth">
+                    <div class="login">
+                        <form method="POST">
+                            <legend>Verification failed</legend>
+                            <p class="info">We encountered a problem while verifying this link, maybe it has expired. Enter your email or username to resend a link to your email, link expires after 3 days.</p>
+                            <div class="input-group">
+                                <label>Email</label>
+                                <div class="input">
+                                    <span class="fas fa-user"></span>
+                                    <input type="email" name="name">
+                                </div>
+                            </div>
+                            <button class="btn">Resend link</button>
+                        </form> 
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+{% endblock %}

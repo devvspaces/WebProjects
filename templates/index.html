@@ -1,0 +1,102 @@
+{% load static %}
+{% extends 'base.html' %}
+{% block main %}
+    <div id="main">
+        <main class="fixed-width">
+            <div class="container">
+                <div id="header" editable=''>
+                    <div id="pro">
+                        <div id="img-pic">
+                            <img width="100%" src="{% static 'images/profile.png'%}">
+                        </div>
+                        <button id="edit-img" class="modal-btn" data-target='#modal-image' disabled><span><i class="fas fa-plus"></i></span></button>
+                    </div>
+                    <div class="text">
+                        <p id="men">Netrobe's Todo</p>
+                        <small>netrobeweb@gmail.com</small> 
+                    </div>
+                    <button id="save"><span><i class="fas fa-edit"></i></span>Edit</button>
+                </div>
+                <div class="modal" id="modal-image">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <a href="#" class="modal-close"><i class="fas fa-times"></i></a>
+                            <div class="modal-form">
+                                <form method="POST">
+                                    <legend>Add profile image</legend>
+                                    <div class="preview">
+                                        <img width="100%" id="target">
+                                    </div>
+                                    <input type="file" id="src">
+                                    <button><span><i class="fas fa-save"></i></span>Save</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal" id="add-todo">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <a href="#" class="modal-close"><i class="fas fa-times"></i></a>
+                            <div class="modal-form">
+                                <form method="POST">
+                                    <legend>Add new todo</legend>
+                                    <div class="label">
+                                        <label>Write here...</label>
+                                        <textarea rows="4"></textarea>
+                                    </div>
+                                    <button><span><i class="fas fa-save"></i></span>Save</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <button id="add" class="modal-btn" data-target='#add-todo'><span><i class="fas fa-plus-circle"></i></span>Add</button>
+                <div id="todos">
+                    <div class="todo-card">
+                        <p class='date'>Mon 14, October 2020</p>
+                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Laboriosam, culpa quisqusit quia! Voluptates, asperiores? gsggsgjs sjssjksd shsdhdsh ssji sjishshjs skshshshjsdhjbsduigsad osadjsaduisdds sdahusaduyhsadbi sdaiusdhbsad Itaque nobis quia officiis iusto laborum aspernatur numquam?</p>
+                        <a href="#" class="close"><i class="fas fa-check-circle"></i></a>
+                        <a href="#" class="delete"><span class="fas fa-trash-alt"></span></a>
+                        <a href="#" class="edit"><span class="fas fa-edit"></span></a>
+                    </div>
+                    <div class="todo-card">
+                        <p class='date'>Mon 14, October 2020</p>
+                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Laboriosam, culpa quisqusit quia! Voluptates, asperiores? Itaque nobis quia officiis iusto laborum aspernatur numquam?</p>
+                        <a href="#" class="close"><i class="fas fa-check-circle"></i></a>
+                        <a href="#" class="delete"><span class="fas fa-trash-alt"></span></a>
+                        <a href="#" class="edit"><span class="fas fa-edit"></span></a>
+                    </div>
+                    <div class="todo-card" data-clicked='true'>
+                        <p class='date'>Mon 14, October 2020</p>
+                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Laboriosam, culpa quisqusit quia! Voluptates, asperiores? Itaque nobis quia officiis iusto laborum aspernatur numquam?</p>
+                        <a href="#" class="close"><i class="fas fa-check-circle"></i></a>
+                        <a href="#" class="delete"><span class="fas fa-trash-alt"></span></a>
+                        <a href="#" class="edit"><span class="fas fa-edit"></span></a>
+                    </div>
+                    <div class="todo-card">
+                        <p class='date'>Mon 14, October 2020</p>
+                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Laboriosam, culpa quisqusit quia! Voluptates, asperiores? Itaque nobis quia officiis iusto laborum aspernatur numquam?</p>
+                        <a href="#" class="close"><i class="fas fa-check-circle"></i></a>
+                        <a href="#" class="delete"><span class="fas fa-trash-alt"></span></a>
+                        <a href="#" class="edit"><span class="fas fa-edit"></span></a>
+                    </div>
+                    <div class="todo-card" data-clicked='true'>
+                        <p class='date'>Mon 14, October 2020</p>
+                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Laboriosam, culpa quisqusit quia! Voluptates, asperiores? Itaque nobis quia officiis iusto laborum aspernatur numquam?</p>
+                        <a href="#" class="close"><i class="fas fa-check-circle"></i></a>
+                        <a href="#" class="delete"><span class="fas fa-trash-alt"></span></a>
+                        <a href="#" class="edit"><span class="fas fa-edit"></span></a>
+                    </div>
+                    <div class="todo-card">
+                        <p class='date'>Mon 14, October 2020</p>
+                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Laboriosam, culpa quisqusit quia! Voluptates, asperiores? Itaque nobis quia officiis iusto laborum aspernatur numquam?</p>
+                        <a href="#" class="close"><i class="fas fa-check-circle"></i></a>
+                        <a href="#" class="delete"><span class="fas fa-trash-alt"></span></a>
+                        <a href="#" class="edit"><span class="fas fa-edit"></span></a>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+{% endblock %}

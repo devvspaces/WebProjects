@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+{% block style %}
+    <style type="text/css">
+        .fixed-width, .container{
+            display: grid;
+            place-items: center;
+        }
+    </style>
+{% endblock %}
+{% block main %}
+    <div id="main">
+        <main class="fixed-width">
+            <div class="container">
+                <div id="auth">
+                    <div class="login">
+                        <form method="POST">
+                            <legend>Verification methods</legend>
+                            <p class="info">Choose a verification method to verify you</p>
+                            <ul>
+                                <li onclick="$('#auth').slick('slickGoTo',4, true)">Question & Answer</li>
+                                <li onclick="$('#auth').slick('slickGoTo',1, true)">Link verification</li>
+                            </ul>
+                        </form> 
+                    </div>
+                    <div class="login">
+                        <form method="POST">
+                            <legend>Link verification</legend>
+                            <p class="info">Enter the email or username you used to register with us, we will send a verification link to the email you registered with, link expires after 3 days.</p>
+                            <div class="input-group">
+                                <label>Email</label>
+                                <div class="input">
+                                    <span class="fas fa-user"></span>
+                                    <input type="email" name="name">
+                                </div>
+                            </div>
+                            <button class="btn">Send link</button>
+                        </form> 
+                    </div>
+                    <div class="signup">
+                        <form method="POST">
+                            <legend>Question and Answer</legend>
+                            <p class="question">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+                            tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim ve.</p>
+                            <div class="input-group">
+                                <label>Answer</label>
+                                <div class="input">
+                                    <span class="fas fa-check"></span>
+                                    <input type="text" name="ans1">
+                                </div>
+                            </div>
+                            <p class="question">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+                            tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim ve.</p>
+                            <div class="input-group">
+                                <label>Answer</label>
+                                <div class="input">
+                                    <span class="fas fa-check"></span>
+                                    <input type="text" name="ans2">
+                                </div>
+                            </div>
+                            <button class="btn">Verify</button>
+                        </form> 
+                    </div>
+                    <div class="signup">
+                        <form method="POST">
+                            <legend>Question and Answer</legend>
+                            <p class="info">Enter your email address you registered with</p>
+                            <div class="input-group">
+                                <label>Email</label>
+                                <div class="input">
+                                    <span class="fas fa-user"></span>
+                                    <input type="email" name="email">
+                                </div>
+                            </div>
+                            <button class="btn">Continue</button>
+                        </form> 
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+{% endblock %}

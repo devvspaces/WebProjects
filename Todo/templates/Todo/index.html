@@ -1,0 +1,183 @@
+{% extends 'Todo/base.html' %}
+{% load static %}
+{% block main %}
+    <div id="main">
+        <main class="fixed-width">
+            <div class="container">     
+                <div class="alert">
+                    {% if messages %}
+                        {% for message in messages %}
+                            {% if message %}
+                                <style type="text/css">
+                                    .alert{
+                                        animation-name: setOff;
+                                        animation-duration: 3s;
+                                        animation-iteration-count: 1;
+                                    }
+                                    @keyframes setOff{
+                                        to{
+                                            opacity: 1;
+                                        }
+                                    }
+                                </style>
+                            {% endif %}
+                            <div class="alert-message alert-{{ message.tags }}">
+                                <p class="message">{{ message|safe }}</p>
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        <div class="alert-message">
+                            <p class="message"></p>
+                        </div>
+                    {% endif %}
+                </div>
+                <div id="header" editable=''>
+                    <div id="pro">
+                        <div id="img-pic">
+                            <img width="100%" src="{{ request.user.profile.image.url }}">
+                        </div>
+                        <button id="edit-img" class="modal-btn" data-target='#modal-image' disabled><span><i class="fas fa-plus"></i></span></button>
+                    </div>
+                    <div class="text">
+                        <p id="men">{{ request.user.name }}</p>
+                        <small>{{ request.user.email }}</small> 
+                    </div>
+                    <button id="save"><span><i class="fas fa-edit"></i></span>Edit</button>
+                    <form method="post" enctype="multipart/form-data" class="my-ajax-form" action='.' data-url='{{ request.build_absolute_uri|safe }}'>
+                        {% csrf_token %}
+                        <input type="text" name="name">
+                        <input type="email" name="email">
+                        <input type="text" name="from" value="profile">
+                    </form>
+                </div>
+                <div class="modal" id="modal-image">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <a href="#" class="modal-close"><i class="fas fa-times"></i></a>
+                            <div class="modal-form">
+                                <form method="POST" enctype="multipart/form-data">
+                                    <legend>Add profile image</legend>
+                                    <div class="preview">
+                                        <img width="100%" id="target">
+                                    </div>
+                                    <input type="file" id="src" name="image">
+                                    <button class="modal-save"><span><i class="fas fa-save"></i></span>Save</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal create" id="add-todo">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <a href="#" class="modal-close"><i class="fas fa-times"></i></a>
+                            <div class="modal-form">
+                                <form method="POST" class="my-ajax-form">
+                                    <legend>Add new todo</legend>
+                                    <div class="cart">
+                                        <label>Category</label>
+                                        <select name="category">
+                                            <option value="LT">Long term</option>
+                                            <option selected value="ST">Short term</option>
+                                        </select>
+                                    </div>
+                                    <div class="label">
+                                        <label>Write here...</label>
+                                        <textarea rows="4" name="todo"></textarea>
+                                        <small class="modal-error disappear">This is an error</small>
+                                    </div>
+                                    <input class="disappear" type="text" name="from" value="create">
+                                    <button class="modal-save"><span><i class="fas fa-save"></i></span>Save</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <button id="add" class="modal-btn" data-target='#add-todo'><span><i class="fas fa-plus-circle"></i></span>Add</button>
+                <div id="todos">
+                    {% for todo in todos %}
+                        <div class="todo-card" data-clicked={{ todo.done }}>
+                            <p class='date'>{{ todo.time }}<br>
+                            {% if todo.category == 'ST' %}
+                                <small>Short term</small>
+                            {% else %}
+                                <small>Long term</small>
+                            {% endif %}
+                            </p>
+                            <p>{{ todo.todo|safe }}</p>
+                            <form method="POST" class="my-ajax-form" action='.' data-url='{{ request.build_absolute_uri|safe }}'>
+                                {% csrf_token %}
+                                <textarea name="todo">{{ todo.todo|safe }}</textarea>
+                                <input type="text" name="tid" value='{{ todo.tid }}'>
+                                <input type="text" class="fromer" name="from">
+                                <button type="submit" class="close"><i class="fas fa-check-circle"></i></button>
+                                <button  type="submit" class="delete"><span class="fas fa-trash-alt"></span></button>
+                                <button  type="submit" class="edit"><span class="fas fa-edit"></span></button>
+                                <select name="category" class="todo_category" value='{{ todo.category }}'>
+                                    {% if todo.category == 'ST' %}
+                                        <option value="LT">Long Term</option>
+                                        <option selected value="ST">Short Term</option>
+                                    {% else %}
+                                        <option selected value="LT">Long Term</option>
+                                        <option value="ST">Short Term</option>
+                                    {% endif %}
+                                </select>
+                            </form>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </main>
+    </div>
+{% endblock %}
+{% block ajax_script%}
+    <script type="text/javascript">
+        function resetForm() {
+            let errors = document.querySelectorAll('.modal-dialog .label .modal-error')
+            errors.forEach(a=>{
+                a.style.display='none'
+            })
+        }
+        function stringResponse(argument) {
+            let result = ''
+            argument.forEach(a=>{
+                result+=(a+'<br>')
+            })
+            return result
+        }
+        function setErrorText(selector, obj) {
+            let errors = document.querySelectorAll('.'+selector+' .modal-dialog .label .modal-error')
+            for (i in obj){
+                errors.forEach(a=>{
+                    if (i == a.previousElementSibling.getAttribute('name')){
+                        a.innerHTML = stringResponse(obj[i])
+                        a.style.display='block'
+                    }
+                })
+            }
+        }
+
+        function ajaxListener(response, status) {
+            try{
+                if (status == 'error'){
+                    setErrorText(response['from'], response)
+                } else {
+                    // let message = document.querySelector('.alert .alert-message p')
+                    // message.innerHTML =  response['data']
+                    setAlert(response['data'], status)
+                    if (response['from'] == 'create') {
+                        closeModal(document.querySelector('.'+response['from']))
+                        // setAlert(response['data'])
+                        // addTodo(response)
+                        setTimeout(function() {
+                            window.location.href = '/'
+                        },0)
+                    }
+                }
+            }
+            catch(e) {
+                print(e)
+            }
+        }
+    </script>
+{% endblock %}

@@ -1,0 +1,86 @@
+{% extends 'Todo/base.html' %}
+{% block main %}
+    <div id="main">
+        <main class="fixed-width">
+            <div class="container">
+                <div class="alert">
+                    {% if messages %}
+                        {% for message in messages %}
+                            {% if message %}
+                                <style type="text/css">
+                                    .alert{
+                                        animation-name: setOff;
+                                        animation-duration: 3s;
+                                        animation-iteration-count: 1;
+                                    }
+                                    @keyframes setOff{
+                                        to{
+                                            opacity: 1;
+                                        }
+                                    }
+                                </style>
+                            {% endif %}
+                            <div class="alert-message alert-{{ message.tags }}">
+                                <p class="message">{{ message|safe }}</p>
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        <div class="alert-message">
+                            <p class="message"></p>
+                        </div>
+                    {% endif %}
+                </div>
+                <div id="QA">
+                    <h2>Questions and Answers</h2>
+                    <div class="qas">
+                        {% for qa in qas %}
+                            <div class="qa">
+                                <div class="head">
+                                    <form method="POST" class="my-ajax-form" action='.' data-url='{{ request.build_absolute_uri|safe }}'>
+                                        <input type="text" name="question">
+                                        <input type="text" name="answer">
+                                        <input type="text" name="from">
+                                        <input type="text" name="pk" value="{{ qa.pk }}">
+                                        <button class="show" type="button"><i class="fas fa-eye-slash"></i></button>
+                                        <button class="edit" type='submit'><i class="fas fa-edit"></i></button>
+                                        <button class="delete" type='submit'><i class="fas fa-trash-alt"></i></button>
+                                    </form>
+                                </div>
+                                <div class="question">
+                                    <p>{{ qa.question }}</p>
+                                </div>
+                                <div class="answer">
+                                    <p>{{ qa.answer }}</p>
+                                </div>
+                            </div>
+                        {% endfor %}
+                        <button class="add"><span class="fas fa-plus"></span><p>Add</p></button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+{% endblock %}
+{% block ajax_script%}
+    <script type="text/javascript">
+        function resetForm() {
+        }
+        function stringResponse(argument) {
+        }
+        function setErrorText(selector, obj) {
+        }
+
+        function ajaxListener(response, status) {
+            try{
+                setAlert(response['data'], status)
+                if (response['pk']){
+                    let qaEdit = document.querySelector('#QA .qas');
+                    qaEdit.lastElementChild.previousElementSibling.firstElementChild.firstElementChild.children[3].value = response['pk'];
+                }
+            }
+            catch(e) {
+                print(e)
+            }
+        }
+    </script>
+{% endblock %}

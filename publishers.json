@@ -1,0 +1,42 @@
+[
+	{
+		"name": "John Doe",
+		"address": "Nalla jaguar",
+		"city": "Toronto",
+		"state_province": "Vancouver",
+		"country": "Usa",
+		"website": "www.google.com",
+	},
+	{
+		"name": "John Paul",
+		"address": "Nalla jaguar",
+		"city": "Toronto",
+		"state_province": "Vancouver",
+		"country": "Usa",
+		"website": "www.google_paul.com",
+	},
+	{
+		"name": "John saul",
+		"address": "Nalla jaguar",
+		"city": "Toronto",
+		"state_province": "Malawi",
+		"country": "Usa",
+		"website": "www.googlesaul.com",
+	},
+	{
+		"name": "John naffu",
+		"address": "Nalla jaguar",
+		"city": "Toronto",
+		"state_province": "Vancouver",
+		"country": "Usa",
+		"website": "www.googlenaffu.com",
+	},
+	{
+		"name": "John Sam",
+		"address": "Nalla jaguar",
+		"city": "Toronto",
+		"state_province": "London",
+		"country": "Usa",
+		"website": "www.googleSam.com",
+	},
+]

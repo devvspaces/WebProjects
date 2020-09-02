@@ -1,0 +1,137 @@
+{% extends 'Todo/base.html' %}
+{% block style %}
+    <style type="text/css">
+        .fixed-width, .container{
+            display: grid;
+            place-items: center;
+        }
+    </style>
+{% endblock %}
+{% block main %}
+    <div id="main">
+        <main class="fixed-width">
+            <div class="container">
+                <div id="auth">
+                    <div class="login">
+                        <span class="mover" onclick="$('#auth').slick('slickNext')">Register</span>
+                        <form class='my-ajax-form' method='POST' action='.' data-url='{{ request.build_absolute_uri|safe }}'>
+                            <legend>Login</legend>
+                            <p class="ajax-messages">Test error</p>
+                            <div class="input-group">
+                                <label>Email</label>
+                                <div class="input">
+                                    <span class="fas fa-user"></span>
+                                    <input type="text" name="email">
+                                </div>
+                                <small class="ajaxerror">this is an error</small>
+                            </div>
+                            <div class="input-group">
+                                <label>Password</label>
+                                <div class="input">
+                                    <span class="fas fa-lock"></span>
+                                    <input type="password" name="password">
+                                </div>
+                                <small class="ajaxerror">this is an error</small>
+                            </div>
+                            <input type="text" name='form' value="login" class="ajaxdiff">
+                            <button class="btn">Sign In</button>
+                            <a href="{% url 'change-password' %}">Forget password  <i class="fas fa-question-circle"></i></a>
+                        </form> 
+                    </div>
+                    <div class="signup">
+                        <span class="mover" onclick="$('#auth').slick('slickPrev')">Login</span>
+                        <form  class='my-ajax-form' method='POST' action='.' data-url='{{ request.build_absolute_uri|safe }}'>
+                            <legend>Register</legend>
+                            <p class="ajax-messages">Test error</p>
+                            <div class="input-group">
+                                <label>Email</label>
+                                <div class="input">
+                                    <span class="fas fa-user"></span>
+                                    <input type="text" name="email">
+                                </div>
+                                <small class="ajaxerror">this is an error</small>
+                            </div>
+                            <div class="input-group">
+                                <label>Username</label>
+                                <div class="input">
+                                    <span class="fas fa-user"></span>
+                                    <input type="text" name="name">
+                                </div>
+                                <small class="ajaxerror">this is an error</small>
+                            </div>
+                            <div class="input-group">
+                                <label>Password</label>
+                                <div class="input">
+                                    <span class="fas fa-lock"></span>
+                                    <input type="password" name="password">
+                                </div>
+                                <small class="ajaxerror">this is an error</small>
+                            </div>
+                            <input type="text" name='form' value="register" class="ajaxdiff">
+                            <button class="btn">Sign Up</button>
+                        </form> 
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+{% endblock %}
+{% block ajax_script%}
+    <script type="text/javascript">
+        function resetForm() {
+            let errors = document.querySelectorAll('.my-ajax-form .input-group .ajaxerror')
+            errors.forEach(a=>{
+                a.style.display='none'
+            })
+            let errorMessages = document.querySelectorAll('.my-ajax-form .ajax-messages')
+            errorMessages.forEach(a=>{
+                a.style.display='none'
+            })
+        }
+        function stringResponse(argument) {
+            let result = ''
+            argument.forEach(a=>{
+                result+=(a+'<br><br>')
+            })
+            return result
+        }
+        function setErrorText(selector, obj) {
+            if (obj['redirectTo']){
+                setTimeout(function () {
+                    window.location.href=obj['redirectTo']
+                }, 2000)
+            }
+            let errors = document.querySelectorAll('.'+selector+' .my-ajax-form .input-group .ajaxerror')
+            let errorMessages = document.querySelector('.'+selector+' .my-ajax-form .ajax-messages')
+            if (obj.message) {
+                errorMessages.innerHTML = obj.message
+                errorMessages.style.display='block'
+            }
+            for (i in obj){
+                errors.forEach(a=>{
+                    if (i == a.previousElementSibling.lastElementChild.getAttribute('name')){
+                        a.innerHTML = stringResponse(obj[i])
+                        a.style.display='block'
+                    }
+                })
+            }
+        }
+        function ajaxListener(response, error = null) {
+            try{
+                setErrorText(response['from'], response)
+            }
+            catch(e) {
+                print('error found')
+                print(e)
+                // window.location.href='/'
+            }
+        }
+    </script>
+{% endblock %}
+{% block extra_script%}
+    <script type="text/javascript">
+        if ("{{ type }}" == "register") {
+            $("#auth").slick('slickGoTo', 2, true);
+        }
+    </script>
+{% endblock %}
